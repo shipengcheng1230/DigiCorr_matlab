@@ -11,9 +11,9 @@ classdef XcorrDisplay < handle
     end
     
     methods
-        function obj = XcorrDisplay(parentFig)
+        function obj = XcorrDisplay(parentFig, signaldata_handle)
             obj.hParent = parentFig;
-            obj.hSignalData = Context.getInstance.getData('SignalData');
+            obj.hSignalData = signaldata_handle;
             obj.hSignalData.addlistener(...
                 'dataimport', @obj.updateView);
             obj.hSignalData.addlistener(...

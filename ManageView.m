@@ -38,8 +38,8 @@ classdef ManageView < handle
                 hParent = groot;
             end
             
-            contextObj = Context.getInstance();
-            filtermodel = contextObj.getData('Filter');
+            filtermodel = Context.getInstance.getData('Filter');
+            signaldata_handle = obj.modelObj.signalDataHandle;
             
             obj.hFig = figure(...
                 'Parent', hParent, ...
@@ -63,8 +63,8 @@ classdef ManageView < handle
             rightLayout = uiextras.VBox(...
                 'Parent', mainLayout, ...
                 'Padding', 10);
-            obj.hSignalTab = SignalDisplay(rightLayout);
-            obj.hXcorrPanel = XcorrDisplay(rightLayout);
+            obj.hSignalTab = SignalDisplay(rightLayout, signaldata_handle);
+            obj.hXcorrPanel = XcorrDisplay(rightLayout, signaldata_handle);
             set(rightLayout, 'Sizes', [-1 -1], 'Spacing', 10);
             
             set(mainLayout, 'Sizes', [-1 -2], 'Spacing', 20);

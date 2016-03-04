@@ -50,19 +50,22 @@ classdef ManageView < handle
             mainLayout = uiextras.HBox(...
                 'Parent', obj.hFig, ...
                 'Padding', 10);
-            
+             
             leftLayout = uiextras.VBox(...
                 'Parent', mainLayout, ...
                 'Padding', 10);
             obj.hButtonPanel = ButtonPanel(leftLayout);
             uiextras.Empty('Parent', leftLayout);
             uiextras.Empty('Parent', leftLayout);
-            obj.hFilterPanel = FilterView(leftLayout, filtermodel);
+            obj.hFilterPanel = ...
+                FilterModule.FilterView(leftLayout, filtermodel);
             set(leftLayout, 'Sizes', [-1 -1 -1 -1], 'Spacing', 10);
             
             rightLayout = uiextras.VBox(...
                 'Parent', mainLayout, ...
                 'Padding', 10);
+            
+            import DataDisplayModule.*
             obj.hSignalTab = SignalDisplay(rightLayout, signaldata_handle);
             obj.hXcorrPanel = XcorrDisplay(rightLayout, signaldata_handle);
             set(rightLayout, 'Sizes', [-1 -1], 'Spacing', 10);

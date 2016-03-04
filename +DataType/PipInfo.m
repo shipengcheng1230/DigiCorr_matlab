@@ -4,9 +4,11 @@ classdef PipInfo < handle
     
     properties
         pipLength = [3 3 3]
-        diameter = [4 4 4]
+        radius_out = [4 4 4]
+        radius_in = [3 3 3]
         material = {'a', 'b', 'c'}
-        velocity = [5 5 5]
+        velocityP = [5 5 5]
+        velocityS = [3 3 3]
         pipSegments = 3
         multiPip = true
     end
@@ -16,27 +18,53 @@ classdef PipInfo < handle
             disp('Pip Info')
         end
         
-        function set.diameter(obj, diameter)
+        function set.radius_out(obj, radius_out)
             try
-                validateattributes(diameter, {'double'}, {'integer'})
-                if diameter <= 0
+                validateattributes(radius_out, {'double'}, {'integer'})
+                if radius_out <= 0
                     msgbox('Invalid diameter')
                     return
                 end
-                obj.diameter = diameter;
+                obj.radius_out = radius_out;
             catch
                 msgbox('Invalid diameter')
             end
         end
         
-        function set.velocity(obj, velocity)
+        function set.radius_in(obj, radius_in)
             try
-                validateattributes(velocity, {'double'}, {'integer'})
-                if velocity <= 0
+                validateattributes(radius_in, {'double'}, {'integer'})
+                if radius_in <= 0
+                    msgbox('Invalid diameter')
+                    return
+                end
+                obj.radius_in = radius_in;
+            catch
+                msgbox('Invalid diameter')
+            end
+        end
+        
+        function set.velocityP(obj, velocityP)
+            try
+                validateattributes(velocityP, {'double'}, {'integer'})
+                if velocityP <= 0
                     msgbox('Invalid velocity')
                     return
                 end
-                obj.velocity = velocity;
+                obj.velocityP = velocityP;
+            catch
+                msgbox('Invalid velocity')
+            end
+        end
+        
+        function set.velocityS(obj, velocityS)
+            try
+                validateattributes(velocityS, {'double'}, {'integer'})
+                if velocityS <= 0
+                    msgbox('Invalid velocity')
+                    return
+                end
+                obj.velocityS = velocityS;
             catch
                 msgbox('Invalid velocity')
             end

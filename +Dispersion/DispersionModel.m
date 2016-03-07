@@ -22,8 +22,14 @@ classdef DispersionModel < handle
         end
         
         function calculate(obj, omega, n_order, m_order_max)
-            [~, pkgdir] = fileparts(fileparts(mfilename('fullpath')));
-            import([pkgdir(2:end) '.*']);
+            try
+                [~, pkgdir] = fileparts(fileparts(mfilename('fullpath')));
+                import([pkgdir(2:end) '.*']);
+            catch err
+                if ~strcmp(err.identifier,'MATLAB:UndefinedFunction')
+                    rethrow(err); 
+                end
+            end
             
             [ obj.v_phase, obj.v_group ] = cal_dispersion(...
                 omega, n_order, m_order_max, ...

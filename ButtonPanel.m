@@ -65,7 +65,7 @@ classdef ButtonPanel < handle
         end
         
         function set_info_button_callback(~, ~, ~)
-            SetInfoView(groot, ...
+            SetInfoModule.SetInfoView(groot, ...
                 Context.getInstance.getData('ProcessData'));
         end
     end

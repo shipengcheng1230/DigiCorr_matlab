@@ -3,7 +3,7 @@ classdef PipInfo < handle
     %   Detailed explanation goes here
     
     properties
-        pipLength = [3 3 3]
+        pipLength = [10 20 30]
         radius_out = [4 4 4]
         radius_in = [3 3 3]
         material = {'a', 'b', 'c'}

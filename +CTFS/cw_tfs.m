@@ -1,13 +1,44 @@
-function [ tf ] = cw_tfs( x, sigma, win_h, win_g )
+function [ tf, t, freq ] = cw_tfs( x, Fs, sigma, win_h, win_g )
 %CTFS Summary of this function goes here
 %   Detailed explanation goes here
 
 [xlen, xcol] = size(x);
-
 assert(xlen > 0, 'input signal length nonpositive')
-assert(sigma > 0, 'sigma must be positive')
+if xcol > 2
+    x = x';
+    [xlen, xcol] = size(x);
+    if xcol > 2
+        error('input x must be 2 by N or N by 2, N > 2')
+    end
+end
+x = vertcat(x, zeros(xlen, xcol));
+for ii = 1: xcol
+    x(:, ii) = interp(x(1: xlen, ii), 2);
+end
+[xlen, xcol] = size(x);
 
-nfft = 2^nextpow2(xlen);
+if nargin < 2 || isempty(Fs)
+    Fs = 1;
+end
+if nargin < 3 || isempty(sigma)
+    sigma = 3.6;
+end
+if nargin < 4 || isempty(win_h)
+    h_len = round(xlen / 4);
+    if ~rem(h_len, 2)
+        h_len = h_len + 1;
+    end
+    win_h = hamming(h_len, 'periodic');
+end
+if nargin < 5 || isempty(win_g)
+    g_len = round(xlen / 10);
+    if ~rem(g_len, 2)
+        g_len = g_len + 1;
+    end
+    win_g = hamming(g_len, 'periodic');
+end
+
+assert(sigma > 0, 'sigma must be positive')
 
 if xcol == 0 || xcol > 2
     error('x must contain 1 or 2 column');
@@ -20,6 +51,7 @@ h_hlen = (h_len - 1) / 2;
 g_hlen = (g_len - 1) / 2;
 
 tau_max = min([round(xlen / 2) - 1, h_hlen]);
+nfft = 2^nextpow2(2 * tau_max + 1);
 tau = 1: tau_max;
 mu = -g_hlen: g_hlen;
 
@@ -51,8 +83,13 @@ for t_i = 1: xlen
 end
 
 tf = 2 * fft(tf);
-if xcol == 1
-    tf = real(tf);
+tf(2: nfft / 2, :) = tf(2: nfft / 2, :) * 2;
+tf = tf(1: nfft / 2 + 1, :);
+
+if nargout > 1
+    t = (1: xlen) / Fs;
+if nargout > 2
+    freq = (0: nfft / 2)' * Fs / nfft;
 end
 end
 

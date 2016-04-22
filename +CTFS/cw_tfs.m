@@ -40,10 +40,6 @@ end
 
 assert(sigma > 0, 'sigma must be positive')
 
-if xcol == 0 || xcol > 2
-    error('x must contain 1 or 2 column');
-end
-
 h_len = length(win_h);
 g_len = length(win_g);
 assert(rem(h_len, 2) && rem(g_len, 2), 'window length should be odd')
@@ -69,7 +65,7 @@ for t_i = 1: xlen
     
     for tau = 1: tau_max
         mu = max([-g_hlen, 1 - t_i + tau]): ...
-            min([g_hlen, xlen - t_i - tau]);        
+            min([g_hlen, xlen - t_i - tau]);
         weight = weight_matrix(g_hlen + 1 + mu, tau);
         
         sum_mu = sum(weight .* ...
@@ -83,13 +79,14 @@ for t_i = 1: xlen
 end
 
 tf = 2 * fft(tf);
-tf(2: nfft / 2, :) = tf(2: nfft / 2, :) * 2;
-tf = tf(1: nfft / 2 + 1, :);
-
+if xcol == 1
+    tf(2: nfft / 2, :) = tf(2: nfft / 2, :) * 2;
+    tf = tf(1: nfft / 2 + 1, :);
+end
 if nargout > 1
     t = (1: xlen) / Fs;
-if nargout > 2
-    freq = (0: nfft / 2)' * Fs / nfft;
-end
+    if nargout > 2
+        freq = (0: nfft / 2)' * Fs / nfft;
+    end
 end
 
